@@ -1,0 +1,267 @@
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install openssh-server fail2ban
+
+sudo apt-get install -y python3-pip
+
+
+sudo apt-get install python3-dev libxml2-dev libxslt1-dev zlib1g-dev libsasl2-dev libldap2-dev build-essential libssl-dev libffi-dev libmysqlclient-dev libjpeg-dev libpq-dev libjpeg8-dev liblcms2-dev libblas-dev libatlas-base-dev
+
+
+sudo apt-get install -y npm
+
+sudo npm install -g less less-plugin-clean-css
+
+sudo apt-get install -y node-less
+
+sudo apt-get install postgresql
+
+sudo su - postgres
+createuser --createdb --username postgres --no-createrole --no-superuser --pwprompt odoo17
+	#passwd: odoo17
+
+psql
+ALTER USER odoo17 WITH SUPERUSER;
+
+\q
+exit
+
+sudo adduser --system --home=/opt/odoo17 --group odoo17
+
+sudo apt-get install git
+
+sudo su - odoo17 -s /bin/bash
+
+git clone https://www.github.com/odoo/odoo --depth 1 --branch 17.0 --single-branch .
+
+
+exit
+
+
+cd /opt 
+sudo mkdir venv && cd venv 
+sudo apt install python3.12-venv
+
+sudo python3 -m venv odoo17-venv
+
+sudo su
+
+source /opt/venv/odoo17-venv/bin/activate
+pip3 install -r /opt/odoo17/requirements.txt
+
+
+sudo apt update && sudo apt install wget
+wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+sudo apt install -f ./wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+
+sudo cp /opt/odoo17/debian/odoo.conf /etc/odoo17.conf
+sudo nano /etc/odoo17.conf
+
+sudo chown odoo17: /etc/odoo17.conf
+sudo chmod 640 /etc/odoo17.conf
+
+sudo mkdir /var/log/odoo
+sudo chown odoo17:root /var/log/odoo
+
+sudo nano /etc/systemd/system/odoo17.service
+
+
+---------------------------------------------------------
+[Unit]
+   Description=Odoo17
+   Documentation=http://www.odoo.com
+   [Service]
+   # Ubuntu/Debian convention:
+   Type=simple
+   User=odoo17
+   ExecStart=/opt/venv/odoo17-venv/bin/python3 /opt/odoo17/odoo-bin -c /etc/odoo17.conf
+   [Install]
+   WantedBy=default.target
+----------------------------------------------------------
+
+
+
+sudo chmod 755 /etc/systemd/system/odoo17.service
+sudo chown root: /etc/systemd/system/odoo17.service
+
+sudo systemctl start odoo17.service
+sudo systemctl status odoo17.service
+
+sudo systemctl enable odoo17.service
+sudo systemctl restart odoo17.service
+
+
+
+sudo apt update
+sudo apt install nginx
+
+
+sudo ufw app list
+
+sudo ufw allow 'Nginx Full'
+sudo ufw allow OpenSSH
+sudo ufw enable
+
+sudo ufw status
+systemctl status nginx
+sudo systemctl enable nginx
+
+
+--------------------------------------------------
+
+linode a record create 
+
+
+-------------------------------------------------
+
+
+sudo nano /etc/nginx/sites-available/test.com
+
+
+
+------------------------------------------------------
+
+
+#odoo server
+upstream odoo {
+server 127.0.0.1:8069;
+}
+upstream odoochat {
+server 127.0.0.1:8072;
+}
+server {
+listen 80;
+server_name aashi.mcmillan.solutions www.aashi.mcmillan.solutions;
+proxy_read_timeout 720s;
+proxy_connect_timeout 720s;
+proxy_send_timeout 720s;
+# Add Headers for odoo proxy mode
+proxy_set_header X-Forwarded-Host $host;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_set_header X-Real-IP $remote_addr;
+# log
+access_log /var/log/nginx/odoo.access.log;
+error_log /var/log/nginx/odoo.error.log;
+# Redirect requests to odoo backend server
+location / {
+proxy_redirect off;
+proxy_pass http://odoo;
+}
+location /longpolling {
+proxy_pass http://odoochat;
+}
+# common gzip
+gzip_types text/css text/less text/plain text/xml application/xml
+application/json application/javascript;
+gzip on;
+client_body_in_file_only clean;
+client_body_buffer_size 32K;
+client_max_body_size 500M;
+sendfile on;
+send_timeout 600s;
+keepalive_timeout 300;
+}
+
+
+-------------------------------------------------------------------
+
+
+sudo ln -s /etc/nginx/sites-available/test.com /etc/nginx/sites-enabled/
+
+
+cd /etc/nginx/sites-enabled/
+rm -f default
+
+sudo nano /etc/nginx/nginx.conf
+-----------------------------------
+
+uncomment the line server_names_hash_bucket_size 64;
+
+  server_names_hash_bucket_size 64;
+uncommand
+---------------------------------------
+
+
+sudo systemctl restart nginx
+sudo systemctl status odoo17.service
+
+
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d example.com -d www.example.com
+mcmillandomains@gmail.com
+sudo systemctl restart nginx
+sudo systemctl restart odoo17.service
+
+
+sudo systemctl status certbot.timer
+sudo certbot renew --dry-run
+
+
+
+
+
+sudo apt-get update
+sudo apt-get install apache2-utils
+
+sudo htpasswd -c /etc/nginx/.htpasswd admin
+pass: Master@nginx#17
+
+cat /etc/nginx/.htpasswd
+
+
+cd /etc/nginx/sites-available
+nano test.com
+
+--------------------------------------------
+add after 
+#redirection
+proxy
+proxy
+#####paste here
+
+location /web/database/manager {
+auth_basic "Zone protege";
+auth_basic_user_file /etc/nginx/.htpasswd;
+proxy_redirect off;
+proxy_pass http://odoo;
+}
+---------------------------------------------------
+
+
+sudo systemctl restart nginx
+sudo systemctl restart odoo17.service
+
+
+
+------------------------------------------------------------------
+
+ssh-keygen -t ed25519 -C "shameer@mcmwg.com"
+
+
+cd /opt
+run the script for clone all repo of 17.0
+chmod +x clone.sh
+./clone.sh
+
+
+
+add path on /etc/odoo17.conf
+
+--
+/opt/extra-addons/cybrosys/CybroAddons,/opt/extra-addons/cybrosys/OpenHRMS,/opt/extra-addons/mcm/odoo_enterprise_addons,/opt/extra-addons/mcm/mcm_gen_modules,/opt/extra-addons/oca/account-financial-reporting,/opt/extra-addons/oca/account-financial-tools,/opt/extra-addons/oca/account-invoicing,/opt/extra-addons/oca/account-payment,/opt/extra-addons/oca/account-reconcile,/opt/extra-addons/oca/reporting-engine,/opt/extra-addons/oca/sale-workflow,/opt/extra-addons/oca/server-tools,/opt/extra-addons/oca/server-ux,/opt/extra-addons/oca/web,/opt/extra-addons/odoo-mates/odooapps,/opt/extra-addons/others/myfree
+----
+
+
+systemctl restart odoo17.service
+---------------------------
+on activate venv 
+
+pip install googletrans==4.0.0-rc1
+
+
+systemctl restart odoo17.service
+-----------------------------------
+
