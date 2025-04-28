@@ -1,0 +1,46 @@
+version: '3'
+services:
+  web:
+    image: odoo:17.0
+    depends_on:
+      - db
+    ports:
+      - "4001:8069"
+      - "4002:8072"
+    restart: unless-stopped
+    networks:
+      - odoo_network
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+    volumes:
+      - odoo-web-data-17:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - ./logs:/mnt/log
+      - ./backups:/mnt/backup
+  db:
+    image: postgres:15.4
+    ports:
+      - "5001:5432"
+    networks:
+      - odoo_network  # Only this network
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    restart: unless-stopped
+    volumes:
+      - odoo-db-data-15:/var/lib/postgresql/data
+
+networks:
+  odoo_network:
+    driver: bridge
+
+volumes:
+  odoo-web-data-17:
+  odoo-db-data-15:
