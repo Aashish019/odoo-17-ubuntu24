@@ -1,0 +1,38 @@
+version: '3'
+services:
+  web:
+    image: odoo:17.0
+    container_name: odoo17
+    # depends_on:
+    #   - db  # You can remove this if you no longer need the db container
+    ports:
+      - "4001:8069"
+      - "4002:8072"
+    restart: unless-stopped
+    networks:
+      - odoo_network
+#    dns:
+ #     - 8.8.8.8
+  #    - 8.8.4.4
+    environment:
+      - HOST=192.168.29.69   # Updated to point to the host's PostgreSQL
+      - USER=odoo
+      - PASSWORD=odoo
+      # - DB_NAME=postgres  # Optionally specify your database name
+    volumes:
+      - odoo-web-data-17:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+      - ./logs:/mnt/log
+      - ./backups:/mnt/backup
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Needed for Linux
+    command: >
+      odoo -c /etc/odoo/odoo.conf
+
+networks:
+  odoo_network:
+    driver: bridge
+
+volumes:
+  odoo-web-data-17:
