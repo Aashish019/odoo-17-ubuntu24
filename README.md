@@ -1,6 +1,7 @@
 ### module update
-
+'''
 ./odoo-bin -c odoo.conf -d Reliant_Rentalz_test -u mcm_sale_purchase_custom --stop-after-init
+'''
 ./odoo-bin -c odoo.conf -d Reliant_Rentalz_test -u all --stop-after-init
 
 ### zatca remove 
