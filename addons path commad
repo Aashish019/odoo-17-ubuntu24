@@ -1,0 +1,1 @@
+ find /home/mcmillan/odoo/odoo17/extra-addons -type f -name '__manifest__.py' -exec dirname {} \; | xargs -n1 dirname | sort -u | paste -sd,
