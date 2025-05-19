@@ -59,8 +59,6 @@ zatcadb() {
     fi
 }
 
-ATE res_company SET l10n_sa_api_mode = '$mode';"
-}
 ```
 
 
