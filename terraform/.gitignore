@@ -1,0 +1,28 @@
+# Terraform state and crash logs
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+
+# .terraform directory
+.terraform/
+
+# Sensitive files
+*.pem
+*.key
+*.crt
+
+# Editor and OS files
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Plan output
+*.plan
+
+# Ignore VS Code settings
+.vscode/

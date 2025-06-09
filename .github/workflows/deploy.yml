@@ -1,0 +1,55 @@
+name: Deploy Linode Instance
+
+on:
+  workflow_dispatch:
+    inputs:
+      linode_label:
+        description: 'Instance Name'
+        required: true
+        default: 'odoo17-dev'
+      linode_type:
+        description: 'Plan (e.g., g6-nanode-1, g6-standard-2)'
+        required: true
+        default: 'g6-nanode-1'
+      linode_region:
+        description: 'Region (e.g., eu-central)'
+        required: true
+        default: 'eu-central'
+      linode_image:
+        description: 'Image (e.g., linode/ubuntu22.04)'
+        required: true
+        default: 'linode/ubuntu22.04'
+      root_password:
+        description: 'Root password for the instance'
+        required: true
+
+jobs:
+  terraform:
+    name: Terraform Linode Apply
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.6.6
+
+    - name: Terraform Init
+      working-directory: terraform
+      run: terraform init
+
+    - name: Terraform Apply
+      working-directory: terraform
+      env:
+        TF_VAR_linode_token: ${{ secrets.LINODE_TOKEN }}
+        TF_VAR_root_password: ${{ secrets.ROOT_PASSWORD }}
+      run: |
+        terraform apply -auto-approve \
+          -var="linode_label=${{ github.event.inputs.linode_label }}" \
+          -var="linode_type=${{ github.event.inputs.linode_type }}" \
+          -var="linode_region=${{ github.event.inputs.linode_region }}"
+          -var="linode_image=${{ github.event.inputs.linode_image }}"
+          -var="root_password=${{ github.event.inputs.root_password }}"
