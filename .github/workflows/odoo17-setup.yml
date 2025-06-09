@@ -1,0 +1,48 @@
+name: Odoo17 Setup
+
+on:
+  workflow_dispatch:
+    inputs:
+      server_ip:
+        description: 'IP address of your server'
+        required: true
+      ssh_user:
+        description: 'SSH username'
+        default: 'root'
+        required: true
+      ssh_password:
+        description: 'SSH password'
+        required: true
+      odoo_pg_password:
+        description: 'PostgreSQL odoo17 user password'
+        required: true
+        default: 'odoo17'
+      subdomain:
+        description: 'Subdomain prefix for domain (e.g., aashi)'
+        required: true
+      email:
+        description: 'Email for Certbot SSL registration'
+        required: true
+        default: 'mcmillandomains@gmail.com'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install sshpass
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Run Odoo setup script remotely
+        env:
+          ODOO_PG_PASSWORD: ${{ github.event.inputs.odoo_pg_password }}
+          ODOO_SUBDOMAIN: ${{ github.event.inputs.subdomain }}
+          ODOO_EMAIL: ${{ github.event.inputs.email }}
+        run: |
+          sshpass -p "${{ github.event.inputs.ssh_password }}" ssh -o StrictHostKeyChecking=no ${{ github.event.inputs.ssh_user }}@${{ github.event.inputs.server_ip }} bash -s <<EOF
+          export ODOO_PG_PASSWORD="${{ github.event.inputs.odoo_pg_password }}"
+          export ODOO_SUBDOMAIN="${{ github.event.inputs.subdomain }}"
+          export ODOO_EMAIL="${{ github.event.inputs.email }}"
+          curl -sL https://raw.githubusercontent.com/Aashish019/odoo-17-ubuntu24/refs/heads/main/odoo/odoo17/odoo17-setup.sh -o odoo17-setup.sh
+          chmod +x odoo17-setup.sh
+          ./odoo17-setup.sh
+          EOF
