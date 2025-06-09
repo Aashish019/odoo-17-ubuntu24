@@ -45,7 +45,6 @@ jobs:
       working-directory: terraform
       env:
         TF_VAR_linode_token: ${{ secrets.LINODE_TOKEN }}
-        TF_VAR_root_password: ${{ secrets.ROOT_PASSWORD }}
       run: |
         terraform apply -auto-approve \
           -var="linode_label=${{ github.event.inputs.linode_label }}" \
