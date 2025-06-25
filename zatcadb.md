@@ -22,8 +22,8 @@ zatcadb() {
         echo "  -o, --only-user-update       Only update res_users table (skip company mode)"
         echo ""
         echo "Example:"
-        echo "  zatcadb mdt_main_17-4 -p=mysecret -u=admin -m=live"
-        echo "  zatcadb arkoun_production -o"
+        echo "  zatcadb demo17 -p=mysecret -u=admin -m=preprod"
+        echo "  zatcadb demo17 -o"
         echo ""
         echo "Created by Aashish"
         return 0
