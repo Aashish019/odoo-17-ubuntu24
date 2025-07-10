@@ -43,8 +43,14 @@ sudo mkdir -p /opt/venv
 sudo apt-get install -y python3-venv
 sudo python3 -m venv /opt/venv/odoo17-venv
 source /opt/venv/odoo17-venv/bin/activate
-sudo pip3 install --upgrade pip
-sudo pip3 install -r /opt/odoo/requirements.txt
+pip install --upgrade pip setuptools wheel cython
+
+# Install gevent and greenlet manually with compatible versions
+pip install "greenlet>=2.0.0" "gevent>=22.10.2"
+
+# Now install remaining requirements, skipping gevent reinstallation
+pip install -r /opt/odoo/requirements.txt --no-deps
+
 
 # Step 5: wkhtmltopdf install
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
