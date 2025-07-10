@@ -18,6 +18,7 @@ fi
 DOMAIN="${ODOO_SUBDOMAIN}.mcmillan.solutions"
 
 # Step 1: Update and install essentials
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install -y openssh-server fail2ban python3-pip python3-dev libxml2-dev libxslt1-dev \
