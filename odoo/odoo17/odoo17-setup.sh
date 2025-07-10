@@ -45,11 +45,11 @@ sudo python3 -m venv /opt/venv/odoo17-venv
 source /opt/venv/odoo17-venv/bin/activate
 pip install --upgrade pip setuptools wheel cython
 
-# Install gevent and greenlet manually with compatible versions
+# Force-install compatible version BEFORE requirements
 pip install "greenlet>=2.0.0" "gevent>=22.10.2"
 
-# Now install remaining requirements, skipping gevent reinstallation
-pip install -r /opt/odoo/requirements.txt --no-deps
+# Install the rest, ignoring already installed compatible gevent
+pip install --no-deps -r /opt/odoo/requirements.txt
 
 
 # Step 5: wkhtmltopdf install
