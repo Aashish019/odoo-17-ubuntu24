@@ -40,7 +40,7 @@ sudo su - odoo -s /bin/bash -c "if [ ! -d /opt/odoo/.git ]; then git clone https
 
 # Step 4: Python virtual environment
 sudo mkdir -p /opt/venv
-sudo apt-get install -y python3.12-venv
+sudo apt-get install -y python3-venv
 sudo python3 -m venv /opt/venv/odoo17-venv
 source /opt/venv/odoo17-venv/bin/activate
 sudo pip3 install --upgrade pip
