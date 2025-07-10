@@ -38,15 +38,15 @@ sudo adduser --system --home=/opt/odoo --group odoo || true
 sudo chown -R odoo: /opt/odoo || true
 sudo su - odoo -s /bin/bash -c "if [ ! -d /opt/odoo/.git ]; then git clone https://github.com/odoo/odoo --depth 1 --branch 17.0 --single-branch /opt/odoo; else cd /opt/odoo && git pull; fi"
 
+# Patch gevent version to avoid build error on Python 3.10+
+sudo sed -i 's/gevent==21.8.0/gevent>=22.10.2/' /opt/odoo/requirements.txt
+
 # Step 4: Python virtual environment
 sudo mkdir -p /opt/venv
 sudo apt-get install -y python3-venv
 sudo python3 -m venv /opt/venv/odoo17-venv
 source /opt/venv/odoo17-venv/bin/activate
 pip install --upgrade pip setuptools wheel cython
-
-# Force-install compatible version BEFORE requirements
-pip install "greenlet>=2.0.0" "gevent>=22.10.2"
 
 # Install the rest, ignoring already installed compatible gevent
 pip install --no-deps -r /opt/odoo/requirements.txt
