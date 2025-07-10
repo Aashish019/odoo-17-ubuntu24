@@ -40,6 +40,7 @@ sudo su - odoo -s /bin/bash -c "if [ ! -d /opt/odoo/.git ]; then git clone https
 
 # Patch gevent version to avoid build error on Python 3.10+
 sudo sed -i 's/gevent==21.8.0/gevent>=22.10.2/' /opt/odoo/requirements.txt
+sudo sed -i 's/greenlet==1.1.2/greenlet==2.0.2/' /opt/odoo/requirements.txt
 
 # Step 4: Python virtual environment
 sudo mkdir -p /opt/venv
@@ -47,12 +48,14 @@ sudo apt-get install -y python3-venv
 sudo python3 -m venv /opt/venv/odoo17-venv
 source /opt/venv/odoo17-venv/bin/activate
 pip install --upgrade pip setuptools wheel cython
+pip install six
 
 # Install the rest, ignoring already installed compatible gevent
 pip install --no-deps -r /opt/odoo/requirements.txt
 
 
 # Step 5: wkhtmltopdf install
+sudo apt-get install -y xfonts-75dpi xfonts-base xfonts-encodings xfonts-utils
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb || true
 sudo apt-get install -y -f
