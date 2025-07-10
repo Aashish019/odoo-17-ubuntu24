@@ -38,11 +38,11 @@ jobs:
           ODOO_SUBDOMAIN: ${{ github.event.inputs.subdomain }}
           ODOO_EMAIL: ${{ github.event.inputs.email }}
         run: |
-          sshpass -p "${{ github.event.inputs.ssh_password }}" ssh -o StrictHostKeyChecking=no ${{ github.event.inputs.ssh_user }}@${{ github.event.inputs.server_ip }} bash -s <<EOF
+          sshpass -p "${{ github.event.inputs.ssh_password }}" ssh -o StrictHostKeyChecking=no ${{ github.event.inputs.ssh_user }}@${{ github.event.inputs.server_ip }} 'bash -s' <<'ENDSSH'
           export ODOO_PG_PASSWORD="${{ github.event.inputs.odoo_pg_password }}"
           export ODOO_SUBDOMAIN="${{ github.event.inputs.subdomain }}"
           export ODOO_EMAIL="${{ github.event.inputs.email }}"
           curl -sL https://raw.githubusercontent.com/Aashish019/odoo-17-ubuntu24/refs/heads/main/odoo/odoo17/odoo17-setup.sh -o odoo17-setup.sh
           chmod +x odoo17-setup.sh
           ./odoo17-setup.sh
-          EOF
+          ENDSSH
