@@ -54,7 +54,9 @@ pip install --no-deps -r /opt/odoo/requirements.txt
 
 # Step 5: wkhtmltopdf install
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
-sudo apt install -f ./wkhtmltox_0.12.6.1-2.jammy_amd64.deb
+sudo dpkg -i wkhtmltox_0.12.6.1-2.jammy_amd64.deb || true
+sudo apt-get install -y -f
+
 
 # Step 6: Odoo config
 sudo cp /opt/odoo/debian/odoo.conf /etc/odoo.conf
