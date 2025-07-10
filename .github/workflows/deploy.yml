@@ -49,6 +49,6 @@ jobs:
         terraform apply -auto-approve \
           -var="linode_label=${{ github.event.inputs.linode_label }}" \
           -var="linode_type=${{ github.event.inputs.linode_type }}" \
-          -var="linode_region=${{ github.event.inputs.linode_region }}"
-          -var="linode_image=${{ github.event.inputs.linode_image }}"
-          -var="root_password=${{ github.event.inputs.root_password }}"
+          -var="linode_region=${{ github.event.inputs.linode_region }}" \
+          -var="linode_image=${{ github.event.inputs.linode_image }}" \
+          -var="root_password=${{ github.event.inputs.root_password }}" 
