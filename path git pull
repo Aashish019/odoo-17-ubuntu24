@@ -1,0 +1,1 @@
+find /opt/odoo17/extra-addons/oca -type d -name ".git" -exec dirname {} \; | xargs -I{} git -C {} pull
