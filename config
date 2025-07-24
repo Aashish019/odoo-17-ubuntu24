@@ -15,7 +15,7 @@ sudo npm install -g less less-plugin-clean-css
 
 sudo apt-get install -y node-less
 
-sudo apt-get install postgresql
+sudo apt-get install postgresql -y
 
 sudo su - postgres
 createuser --createdb --username postgres --no-createrole --no-superuser --pwprompt odoo17
@@ -27,11 +27,11 @@ ALTER USER odoo17 WITH SUPERUSER;
 \q
 exit
 
-sudo adduser --system --home=/opt/odoo17 --group odoo17
+sudo adduser --system --home=/opt/odoo --group odoo
 
-sudo apt-get install git
+sudo apt-get install git -y
 
-sudo su - odoo17 -s /bin/bash
+sudo su - odoo -s /bin/bash
 
 git clone https://www.github.com/odoo/odoo --depth 1 --branch 17.0 --single-branch .
 
@@ -48,23 +48,23 @@ sudo python3 -m venv odoo17-venv
 sudo su
 
 source /opt/venv/odoo17-venv/bin/activate
-pip3 install -r /opt/odoo17/requirements.txt
+pip3 install -r /opt/odoo/requirements.txt
 
 
 sudo apt update && sudo apt install wget
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-2/wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 sudo apt install -f ./wkhtmltox_0.12.6.1-2.jammy_amd64.deb
 
-sudo cp /opt/odoo17/debian/odoo.conf /etc/odoo17.conf
-sudo nano /etc/odoo17.conf
+sudo cp /opt/odoo/debian/odoo.conf /etc/odoo.conf
+sudo nano /etc/odoo.conf
 
-sudo chown odoo17: /etc/odoo17.conf
-sudo chmod 640 /etc/odoo17.conf
+sudo chown odoo: /etc/odoo.conf
+sudo chmod 640 /etc/odoo.conf
 
 sudo mkdir /var/log/odoo
-sudo chown odoo17:root /var/log/odoo
+sudo chown odoo:root /var/log/odoo
 
-sudo nano /etc/systemd/system/odoo17.service
+sudo nano /etc/systemd/system/odoo.service
 
 
 ---------------------------------------------------------
@@ -74,22 +74,22 @@ sudo nano /etc/systemd/system/odoo17.service
    [Service]
    # Ubuntu/Debian convention:
    Type=simple
-   User=odoo17
-   ExecStart=/opt/venv/odoo17-venv/bin/python3 /opt/odoo17/odoo-bin -c /etc/odoo17.conf
+   User=odoo
+   ExecStart=/opt/venv/odoo17-venv/bin/python3 /opt/odoo/odoo-bin -c /etc/odoo.conf
    [Install]
    WantedBy=default.target
 ----------------------------------------------------------
 
 
 
-sudo chmod 755 /etc/systemd/system/odoo17.service
-sudo chown root: /etc/systemd/system/odoo17.service
+sudo chmod 755 /etc/systemd/system/odoo.service
+sudo chown root: /etc/systemd/system/odoo.service
 
-sudo systemctl start odoo17.service
-sudo systemctl status odoo17.service
+sudo systemctl start odoo.service
+sudo systemctl status odoo.service
 
-sudo systemctl enable odoo17.service
-sudo systemctl restart odoo17.service
+sudo systemctl enable odoo.service
+sudo systemctl restart odoo.service
 
 
 
@@ -186,14 +186,14 @@ uncommand
 
 
 sudo systemctl restart nginx
-sudo systemctl status odoo17.service
+sudo systemctl status odoo.service
 
 
 sudo apt install certbot python3-certbot-nginx
 sudo certbot --nginx -d example.com -d www.example.com
 mcmillandomains@gmail.com
 sudo systemctl restart nginx
-sudo systemctl restart odoo17.service
+sudo systemctl restart odoo.service
 
 
 sudo systemctl status certbot.timer
@@ -232,7 +232,7 @@ proxy_pass http://odoo;
 
 
 sudo systemctl restart nginx
-sudo systemctl restart odoo17.service
+sudo systemctl restart odoo.service
 
 
 
@@ -248,20 +248,20 @@ chmod +x clone.sh
 
 
 
-add path on /etc/odoo17.conf
-
+add path on /etc/odoo.conf
+ https://raw.githubusercontent.com/Aashish019/odoo-17-ubuntu24/refs/heads/main/addons%20path%20commad
 --
 /opt/extra-addons/cybrosys/CybroAddons,/opt/extra-addons/cybrosys/OpenHRMS,/opt/extra-addons/mcm/odoo_enterprise_addons,/opt/extra-addons/mcm/mcm_gen_modules,/opt/extra-addons/oca/account-financial-reporting,/opt/extra-addons/oca/account-financial-tools,/opt/extra-addons/oca/account-invoicing,/opt/extra-addons/oca/account-payment,/opt/extra-addons/oca/account-reconcile,/opt/extra-addons/oca/reporting-engine,/opt/extra-addons/oca/sale-workflow,/opt/extra-addons/oca/server-tools,/opt/extra-addons/oca/server-ux,/opt/extra-addons/oca/web,/opt/extra-addons/odoo-mates/odooapps,/opt/extra-addons/others/myfree
 ----
 
 
-systemctl restart odoo17.service
+systemctl restart odoo.service
 ---------------------------
 on activate venv 
 
 pip install googletrans==4.0.0-rc1
 
 
-systemctl restart odoo17.service
+systemctl restart odoo.service
 -----------------------------------
 
