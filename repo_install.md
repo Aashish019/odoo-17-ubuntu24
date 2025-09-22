@@ -48,10 +48,11 @@ chmod +X  repo.sh
 
 ```
 ./repo.sh
-
 ```
 
 ### Note: 
+Change repo accourding to your choice 
+Also note the branch name
 
 
 
