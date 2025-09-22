@@ -30,5 +30,5 @@ pg_dump -d mdt_logistics -F p > odoo_backup.sql
 
 Copy sql
 ```
-scp sahad@192.168.29.13:/home/sahad/deployment/odoo-17/config/docker/odoo_backup.sql ./
+scp aashi@192.168.29.13:/home/aashi/deployment/odoo-17/config/docker/odoo_backup.sql ./
 ```
