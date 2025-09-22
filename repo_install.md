@@ -54,6 +54,6 @@ chmod +X  repo.sh
 Change repo accourding to your choice 
 Also note the branch name
 
-> for **addons path finder*** [Click Here] (https://github.com/Aashish019/odoo-17-ubuntu24/blob/main/addons_path_finder.md#addon-path-finder)
+> for **addons path finder** [Click Here](https://github.com/Aashish019/odoo-17-ubuntu24/blob/main/addons_path_finder.md#addon-path-finder)
 
 
