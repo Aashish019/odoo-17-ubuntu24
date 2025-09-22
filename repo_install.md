@@ -1,3 +1,11 @@
+
+### REPO INSTALL
+
+```
+nano repo.sh
+```
+
+```
 #!/bin/bash
 
 # Define repositories and their respective folders
@@ -30,3 +38,20 @@ for category in "${!REPOS[@]}"; do
 done
 
 echo "✅ All repositories cloned successfully into '$MAIN_DIR'!"
+```
+### ✅ Apply it:
+
+```
+chmod +X  repo.sh
+```
+### ✅ RUN:
+
+```
+./repo.sh
+
+```
+
+### Note: 
+
+
+
