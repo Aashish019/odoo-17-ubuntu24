@@ -1,7 +1,7 @@
 ### ZATCA 
 
 ```
-nano .bashrc or .zshrc
+nano .bashrc 
 ```
 ```
 zatcadb() {
@@ -65,7 +65,7 @@ zatcadb() {
 
 ### ✅ Apply it:
 ```
-source ~/.bashrc  # or ~/.zshrc
+source ~/.bashrc  
 ```
 ### ✅ Usage:
 ```
