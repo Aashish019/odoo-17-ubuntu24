@@ -42,7 +42,7 @@ echo "✅ All repositories cloned successfully into '$MAIN_DIR'!"
 ### ✅ Apply it:
 
 ```
-chmod +X  repo.sh
+chmod +x repo.sh
 ```
 ### ✅ RUN:
 
